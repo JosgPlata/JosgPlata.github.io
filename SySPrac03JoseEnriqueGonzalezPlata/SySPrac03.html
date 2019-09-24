@@ -1,0 +1,570 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Pr&aacute;ctica 3: Se&ntilde;ales continuas</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-09-24"><meta name="DC.source" content="SySPrac03.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 3: Se&ntilde;ales continuas</h1><!--introduction--><p>Grupo: 2TV1</p><p>Materia: Se&ntilde;ales y Sistemas</p><p>Alumnos:</p><p><i>Aparicio Espinoza Octavio Joel</i></p><p><i>Gonzalez Plata Jose Enrique</i></p><p><i>Morales Rodriguez Diego Emilio</i></p><p><i>Morales Vazquez Pedro Benigno</i></p><p>Profesor: Dr. Rafael Mart&iacute;nez Mart&iacute;nez</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Objetivos</a></li><li><a href="#2">Introducci&oacute;n</a></li><li><a href="#3">Desarrollo parte 1</a></li><li><a href="#5">Desarrollo parte 2</a></li><li><a href="#7">Desarrollo parte 4</a></li><li><a href="#20">Desarrollo parte 5</a></li><li><a href="#32">Desarrollo parte 6</a></li><li><a href="#33">Desarrollo parte 7</a></li></ul></div><h2 id="1">Objetivos</h2><div><ul><li>Manipulaci&oacute;n b&aacute;sica de MATLAB</li><li>Gr&aacute;ficas de se&ntilde;ales reales y complejas continuas</li><li>Transformaci&oacute;n de se&ntilde;ales continuas (escalamientos y traslaciones)</li><li>Calculo de energ&iacute;a y potencia de se&ntilde;ales continuas</li></ul></div><h2 id="2">Introducci&oacute;n</h2><p><b>Historia de matlab:</b></p><p>El primer MATLAB&reg; no era un lenguaje de programaci&oacute;n; Era una simple calculadora de matriz interactiva. No hab&iacute;a programas, ni cajas de herramientas, ni gr&aacute;ficos. Y no ODEs o FFTs.</p><p>La base matem&aacute;tica para la primera versi&oacute;n de MATLAB fue una serie de trabajos de investigaci&oacute;n de JH Wilkinson y 18 de sus colegas, publicados entre 1965 y 1970 y luego recopilados en Handbook for Automatic Computation, Volume II, Linear Algebra, editado por Wilkinson y C. Reinsch Estos documentos presentan algoritmos, implementados en Algol 60, para resolver problemas de ecuaciones lineales de matrices y valores propios.</p><p>En 1983, Jack Little sugiri&oacute; la creaci&oacute;n de un producto comercial basado en MATLAB. La PC IBM&reg; se hab&iacute;a presentado solo dos a&ntilde;os antes. Apenas era lo suficientemente potente como para ejecutar un programa como MATLAB, pero Little anticip&oacute; su evoluci&oacute;n. Dej&oacute; su trabajo, compr&oacute; un clon de PC Compaq &reg; en Sears, se mud&oacute; a Stanford y junto a Cleve Moler y Steve Bangert escribieron una versi&oacute;n nueva y extendida de MATLAB en C.</p><p><b>Alternativas de c&oacute;digo abierto:</b></p><div><ul><li><a href="https://www.gnu.org/software/octave/">GNU Octave</a>: Puede ser la alternativa m&aacute;s conocida a MATLAB. En desarrollo activo durante casi tres d&eacute;cadas, Octave se ejecuta en Windows, Mac y Linux, y est&aacute; empaquetado para la mayor&iacute;a de las distribuciones principales.</li><li><a href="https://www.scilab.org/">Scilab</a>: Es otra opci&oacute;n de c&oacute;digo abierto para computaci&oacute;n num&eacute;rica que se ejecuta en todas las plataformas principales: Windows, Mac y Linux incluidos. Scilab es quiz&aacute;s la alternativa m&aacute;s conocida fuera de Octave, y (como Octave) es muy similar a MATLAB en su implementaci&oacute;n, aunque la compatibilidad exacta no es un objetivo de los desarrolladores del proyecto.</li><li><a href="https://www.python.org/">Python</a>: Python es un lenguaje de programaci&oacute;n general (como Java, C, C++,&#8230;). En principio no tiene nada que ver con matlab. Sin embargo, existe unas bibliotecas de c&aacute;lculo cient&iacute;fico para Python que permite incluir casi la misma funcionalidad en un lenguaje de programaci&oacute;n general.</li><li><a href="https://julialang.org/">Julia</a>:: Es un lenguaje de programaci&oacute;n homoic&oacute;nico, multiplataforma y multiparadigma de tipado din&aacute;mico de alto nivel y alto desempe&ntilde;o para la computaci&oacute;n gen&eacute;rica, t&eacute;cnica y cient&iacute;fica, con una sintaxis similar a la de otros entornos de computaci&oacute;n similares</li><li><a href="http://www.sagemath.org/index.html">SageMath</a>: Es otro sistema de software de matem&aacute;ticas de c&oacute;digo abierto que podr&iacute;a ser una buena opci&oacute;n para aquellos que buscan una alternativa de MATLAB. Est&aacute; construido sobre una variedad de conocidas bibliotecas de computaci&oacute;n cient&iacute;fica basadas en Python, y su propio lenguaje es sint&aacute;cticamente similar a Python. Tiene muchas caracter&iacute;sticas que incluyen una interfaz de l&iacute;nea de comandos, cuadernos basados en navegador, herramientas para incrustar f&oacute;rmulas en otros documentos y, por supuesto, muchas bibliotecas matem&aacute;ticas.</li></ul></div><h2 id="3">Desarrollo parte 1</h2><p>Crea una funci&oacute;n que se llame <i>fun1</i> y reciba dos parametros <img src="SySPrac03_eq08589834809570054062.png" alt="$\omega$" style="width:10px;height:7px;"> y <img src="SySPrac03_eq05508344529756732484.png" alt="$a$" style="width:7px;height:7px;"> la funci&oacute;n debe regresar la evaluaci&oacute;n <img src="SySPrac03_eq01407365636722940873.png" alt="$F(\omega)=a/(a^2+\omega^2)$" style="width:124px;height:17px;">, esta funci&oacute;n debe trabajr con <img src="SySPrac03_eq16064389548595522758.png" alt="$a\in R$" style="width:37px;height:11px;"> y <img src="SySPrac03_eq02576817051637404792.png" alt="$t\in  R^n$" style="width:41px;height:11px;">. Debe mostrar su c&oacute;digo en el reporte (sin ejecutar).</p><pre class="language-matlab"><span class="keyword">function</span> w=fun1(t,a)
+<span class="keyword">if</span>(isreal(a))
+   w=a./(t.^2+a^2);
+<span class="keyword">else</span>
+    display(<span class="string">"Solo numeros reales"</span>);
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><h2 id="5">Desarrollo parte 2</h2><p>Construya una funci&oacute;n que gr&aacute;fique funciones de <img src="SySPrac03_eq02145986785580767623.png" alt="$f:R\rightarrow R$" style="width:66px;height:14px;"> en el formato de su elecci&oacute;n y pruebe su c&oacute;digo mostrando la gr&aacute;fica de <img src="SySPrac03_eq04634431881849194213.png" alt="$F(\omega)$" style="width:31px;height:15px;"> vs <img src="SySPrac03_eq08589834809570054062.png" alt="$\omega$" style="width:10px;height:7px;"> en el intervalo <img src="SySPrac03_eq01169792831847459841.png" alt="$[-2,2]$" style="width:38px;height:15px;"> para <img src="SySPrac03_eq13016372792947090052.png" alt="$a=1$" style="width:34px;height:10px;">, no debe incluir el c&oacute;digo, solo el uso de la funci&oacute;n para mostrar la gr&aacute;fica</p><pre class="codeinput">graficar(-2:0.1:2,fun1(-2:0.1:2,1));
+</pre><img vspace="5" hspace="5" src="SySPrac03_01.png" alt=""> <p>Donde el primer argumento es el vector que define el intervalo sobre el que se evaluara la funcion.</p><p>El segundo argumento, como se puede apreciar, es la funcion evaluada en ese vector. En este caso la funcion del ejercicio anterior, fun1, con a=1.</p><h2 id="7">Desarrollo parte 4</h2><p>Realiza las mismas operaciones que Lathi en las secciones M1.1 a M1.4  que se encuentra al final del cap&iacute;tulo 1 y antes de la secci&oacute;n de  problemas, cambie los <i>inline</i> por funciones anonimas</p><p><b>SECCION M1.1: Funciones en linea(Inline)</b></p><pre class="codeinput">f = @(t) exp(-t).*cos(2*pi*t);
+t = 0;
+f(t)
+f(0)
+t = (-2:2);
+f(t)
+plot(t,f(t));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'f(t)'</span>)
+grid;
+</pre><pre class="codeoutput">
+ans =
+
+     1
+
+
+ans =
+
+     1
+
+
+ans =
+
+    7.3891    2.7183    1.0000    0.3679    0.1353
+
+</pre><img vspace="5" hspace="5" src="SySPrac03_02.png" alt=""> <pre class="codeinput">t = (-2:0.01:2);
+plot (t,f(t));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'f(t)'</span>);
+grid;
+</pre><img vspace="5" hspace="5" src="SySPrac03_03.png" alt=""> <p><b>SECCION M1.2: Operadres relacionales y la funci&oacute;n escalon unitario</b></p><pre class="codeinput">u = @(t) t&gt;=0;
+t=(-2:2);
+plot (t,u(t));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'u(t)'</span>);
+</pre><img vspace="5" hspace="5" src="SySPrac03_04.png" alt=""> <pre class="codeinput">t = (-2:0.01:2);
+plot (t,u(t));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'u(t)'</span>);
+axis ([-2 2 -0.1 1.1]);
+</pre><img vspace="5" hspace="5" src="SySPrac03_05.png" alt=""> <pre class="codeinput">p = @(t) (t&gt;=0) &amp; (t&lt;1);
+t = (-1:0.01:2); plot(t,p(t));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'p(t) = u(t)-u(t-1)'</span>);
+axis ([-1 2 -.1 1.1]);
+</pre><img vspace="5" hspace="5" src="SySPrac03_06.png" alt=""> <p><b>SECCION M1.3: Visualizando operaciones en una variable independiente</b></p><pre class="codeinput">g = @(t) exp(-t).*cos(2*pi*t).*(t&gt;=0);
+t = (-2:0.01:2);
+plot(t,g(2*t+1));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'g(2t+1)'</span>);
+grid;
+</pre><img vspace="5" hspace="5" src="SySPrac03_07.png" alt=""> <pre class="codeinput">plot(t,g(-t+1));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'g(-t+1)'</span>);
+grid;
+</pre><img vspace="5" hspace="5" src="SySPrac03_08.png" alt=""> <pre class="codeinput">plot(t,g(2*t+1) +g(-t+1));
+xlabel(<span class="string">'t'</span>);
+ylabel(<span class="string">'h(t)'</span>);
+grid;
+</pre><img vspace="5" hspace="5" src="SySPrac03_09.png" alt=""> <p><b>SECCION M1.4: Integraci&oacute;n numerca y estimaci&oacute;n de la energ&iacute;a de la se&ntilde;al</b></p><pre class="codeinput">x = @(t) exp(-t).*((t&gt;=0)&amp;(t&lt;1));
+t = (0:0.01:1);
+E_x =sum(x(t).*x(t)*0.01)
+x_squared = @(t) exp(-2*t).*((t&gt;=0)&amp;(t&lt;1));
+E_x = quad(x_squared,0,1)
+g_squared = @(t) exp(-2*t).*(cos(2*pi*t).^2).*(t&gt;=0);
+t = (0:0.001:100);
+E_g = sum(g_squared(t)*0.001)
+E_g = quad(g_squared, 0,100)
+</pre><pre class="codeoutput">
+E_x =
+
+    0.4367
+
+
+E_x =
+
+    0.4323
+
+
+E_g =
+
+    0.2567
+
+
+E_g =
+
+    0.2562
+
+</pre><h2 id="20">Desarrollo parte 5</h2><p>Resuelve el problema 1.2.2 usando las herramientas del paso anterior.</p><p><b>Problema 1.2.2</b></p><p>Para la se&ntilde;al <img src="SySPrac03_eq10967790203392305396.png" alt="$x(t)=-t[u(t+4)-u(t)] + t[u(t)-u(t-2)]$" style="width:286px;height:15px;"> realice las graficas</p><p>a) <img src="SySPrac03_eq12657945112240979270.png" alt="$x(t-4)$" style="width:49px;height:15px;"></p><p>b) <img src="SySPrac03_eq17012574930567585137.png" alt="$x(t/1.5)$" style="width:50px;height:15px;"></p><p>c) <img src="SySPrac03_eq09897293323470263254.png" alt="$x(-t)$" style="width:35px;height:15px;"></p><p>d) <img src="SySPrac03_eq03542025780904024759.png" alt="$x(2t-4)$" style="width:56px;height:15px;"></p><p>e) <img src="SySPrac03_eq06543333246515609381.png" alt="$x(2-t)$" style="width:49px;height:15px;"></p><pre class="codeinput">x=@(t) ((-t).*((t&lt;0)&amp;(t&gt;-4))) +((t).*((t&gt;0)&amp;(t&lt;2)));
+    t=[-10:0.0001:10];
+    plot(t,x(t));
+    xlabel(<span class="string">'t'</span>);
+    ylabel(<span class="string">'x(t)'</span>);
+</pre><img vspace="5" hspace="5" src="SySPrac03_10.png" alt=""> <p><b>a)</b></p><pre class="codeinput">t=[-10:0.0001:10];
+    plot(t,x(t-4));
+    xlabel(<span class="string">'t'</span>);
+    ylabel(<span class="string">'x(t-4)'</span>);
+</pre><img vspace="5" hspace="5" src="SySPrac03_11.png" alt=""> <p><b>b)</b></p><pre class="codeinput">t=[-10:0.0001:10];
+    plot(t,x(t/1.5));
+    xlabel(<span class="string">'t'</span>);
+    ylabel(<span class="string">'x(t/1.5)'</span>);
+</pre><img vspace="5" hspace="5" src="SySPrac03_12.png" alt=""> <p><b>c)</b></p><pre class="codeinput">t=[-10:0.0001:10];
+    plot(t,x(-t));
+    xlabel(<span class="string">'t'</span>);
+    ylabel(<span class="string">'x(-t)'</span>);
+</pre><img vspace="5" hspace="5" src="SySPrac03_13.png" alt=""> <p><b>d)</b></p><pre class="codeinput">t=[-10:0.0001:10];
+    plot(t,x(2.*t-4));
+    xlabel(<span class="string">'t'</span>);
+    ylabel(<span class="string">'x(2t-4)'</span>);
+</pre><img vspace="5" hspace="5" src="SySPrac03_14.png" alt=""> <p><b>e)</b></p><pre class="codeinput">t=[-10:0.0001:10];
+    plot(t,x(2-t));
+    xlabel(<span class="string">'t'</span>);
+    ylabel(<span class="string">'x(2-t)'</span>);
+</pre><img vspace="5" hspace="5" src="SySPrac03_15.png" alt=""> <h2 id="32">Desarrollo parte 6</h2><p>Escriba una funci&oacute;n que se llame energia que reciba como argumento una funci&oacute;n (anonima o simbolica) y que regrese el calculo de la energ&iacute;a, para esto puede resultar &uacute;til investigar las instrucciones int , integral Se presupone utilizar el c&oacute;digo solo con funciones de energia. Muestre el c&oacute;digo sin ejecutar, y posteriormente resuelva el problema 1.1.3</p><p><b>Funci&oacute;n de energ&iacute;a</b></p><p>Tenemos la siguiente funci&oacute;n:</p><pre class="language-matlab"><span class="keyword">function</span> E = energia(f,a,b)
+</pre><pre>     E=integral(abs(f).^2,a,b);</pre><pre class="language-matlab"><span class="keyword">end</span>
+</pre><p>Los parametros de los que depende la energ&iacute;a en nuestra funci&oacute;n son: la funci&oacute;n, el limite inferior y el limite superior para integrar.</p><h2 id="33">Desarrollo parte 7</h2><p>Escriba una funci&oacute;n que se llame potencia que reciba como argumento una funci&oacute;n (anonima o simbolica) y que regrese el calculo de la potencia para esto puede resultar &uacute;til investigar las instrucciones int , integral Se presupone utilizar el c&oacute;digo solo con funciones de potencia. Muestre el c&oacute;digo sin ejecutar, y posteriormente resuelva el problema 1.1.4</p><pre class="language-matlab"><span class="keyword">function</span>  P = potencia(f,T)
+</pre><pre>     P=(1/T) * integral(f,-T/2, T/2);</pre><pre class="language-matlab"><span class="keyword">end</span>
+</pre><p><b>Problema 1.1.4</b> Encuentre la potencia de la se&ntilde;al peri&oacute;dica <img src="SySPrac03_eq07414952297413926945.png" alt="$x(t)=t^{3}$" style="width:54px;height:17px;">. Encuentra tambi&eacute;n las potencias y los valores rms de:</p><p>a) <img src="SySPrac03_eq08553293075075591414.png" alt="$-x(t)$" style="width:34px;height:15px;"></p><p>b) <img src="SySPrac03_eq09322914678131864641.png" alt="$2x(t)$" style="width:31px;height:15px;"></p><p>c) <img src="SySPrac03_eq11228850628849404961.png" alt="$cx(t)$" style="width:30px;height:15px;"></p><p><b>Figura <img src="SySPrac03_eq14833433867325483769.png" alt="$x(t)$" style="width:23px;height:15px;"></b></p><pre class="codeinput">x=@(t) t.^3;
+t=-100:0.1:100;
+plot(t,x(t))
+title(<span class="string">'Gr&aacute;fica de la se&ntilde;al f(t)=t^3 '</span>)
+</pre><img vspace="5" hspace="5" src="SySPrac03_16.png" alt=""> <p>a) <img src="SySPrac03_eq08553293075075591414.png" alt="$-x(t)$" style="width:34px;height:15px;"></p><pre class="codeinput">f=(@(t) ((abs(-(t.^3))).^2));
+p = potencia(x,4)
+<span class="comment">% RMS</span>
+rms = sqrt(p)
+</pre><pre class="codeoutput">
+p =
+
+   1.1102e-16
+
+
+rms =
+
+   1.0537e-08
+
+</pre><p>b) <img src="SySPrac03_eq09322914678131864641.png" alt="$2x(t)$" style="width:31px;height:15px;"></p><pre class="codeinput">f=(@(t) ((abs(2.*(t.^3))).^2));
+potencia(f,4)
+<span class="comment">% RMS</span>
+rms=sqrt(ans)
+</pre><pre class="codeoutput">
+ans =
+
+   36.5714
+
+
+rms =
+
+    6.0474
+
+</pre><p>c) <img src="SySPrac03_eq11228850628849404961.png" alt="$cx(t)$" style="width:30px;height:15px;"></p><pre class="codeinput">f=@(t) ((abs((t.^3))).^2);
+potencia(f,4)
+<span class="comment">% RMS</span>
+rms=sqrt(ans)
+</pre><pre class="codeoutput">
+ans =
+
+    9.1429
+
+
+rms =
+
+    3.0237
+
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Práctica 3: Señales continuas
+%
+%
+% Grupo: 2TV1
+%
+% Materia: Señales y Sistemas
+%
+% Alumnos:
+% 
+% _Aparicio Espinoza Octavio Joel_
+%
+% _Gonzalez Plata Jose Enrique_
+%
+% _Morales Rodriguez Diego Emilio_
+%
+% _Morales Vazquez Pedro Benigno_
+%
+% Profesor: Dr. Rafael Martínez Martínez
+%
+%
+
+%%
+%% Objetivos
+% 
+% * Manipulación básica de MATLAB
+% * Gráficas de señales reales y complejas continuas
+% * Transformación de señales continuas (escalamientos y traslaciones)
+% * Calculo de energía y potencia de señales continuas
+%
+%% Introducción
+% *Historia de matlab:*
+%
+% El primer MATLAB® no era un lenguaje de programación; 
+% Era una simple calculadora de matriz interactiva.
+% No había programas, ni cajas de herramientas, ni gráficos. Y no ODEs o FFTs.
+% 
+% La base matemática para la primera versión de MATLAB fue una serie de trabajos 
+% de investigación de JH Wilkinson y 18 de sus colegas, publicados entre 1965 y 1970
+% y luego recopilados en Handbook for Automatic Computation, Volume II, Linear Algebra,
+% editado por Wilkinson y C. Reinsch Estos documentos presentan algoritmos, implementados
+% en Algol 60, para resolver problemas de ecuaciones lineales de matrices y valores propios.
+%
+% En 1983, Jack Little sugirió la creación de un producto comercial basado en MATLAB. 
+% La PC IBM® se había presentado solo dos años antes. Apenas era lo suficientemente 
+% potente como para ejecutar un programa como MATLAB, pero Little anticipó su evolución. 
+% Dejó su trabajo, compró un clon de PC Compaq ® en Sears, se mudó a Stanford y junto a 
+% Cleve Moler y Steve Bangert escribieron una versión nueva y extendida de MATLAB en C.
+% 
+% *Alternativas de código abierto:*
+% 
+% * <https://www.gnu.org/software/octave/ GNU Octave>:
+% Puede ser la alternativa más conocida a MATLAB. En desarrollo activo durante 
+% casi tres décadas, Octave se ejecuta en Windows, Mac y Linux, y está empaquetado para la 
+% mayoría de las distribuciones principales.
+% * <https://www.scilab.org/ Scilab>: 
+% Es otra opción de código abierto para computación numérica que se ejecuta en todas
+% las plataformas principales: Windows, Mac y Linux incluidos. Scilab es quizás la alternativa 
+% más conocida fuera de Octave, y (como Octave) es muy similar a MATLAB en su implementación,
+% aunque la compatibilidad exacta no es un objetivo de los desarrolladores del proyecto.
+% * <https://www.python.org/ Python>:
+% Python es un lenguaje de programación general (como Java, C, C++,…). En principio no tiene 
+% nada que ver con matlab. Sin embargo, existe unas bibliotecas de cálculo científico para 
+% Python que permite incluir casi la misma funcionalidad en un lenguaje de programación general.
+% * <https://julialang.org/ Julia>:: 
+% Es un lenguaje de programación homoicónico, multiplataforma y multiparadigma de tipado 
+% dinámico de alto nivel y alto desempeño para la computación genérica, técnica y científica,  
+% con una sintaxis similar a la de otros entornos de computación similares
+% * <http://www.sagemath.org/index.html SageMath>:
+% Es otro sistema de software de matemáticas de código abierto que podría ser una
+% buena opción para aquellos que buscan una alternativa de MATLAB. Está construido sobre una 
+% variedad de conocidas bibliotecas de computación científica basadas en Python, y su propio 
+% lenguaje es sintácticamente similar a Python. Tiene muchas características que incluyen una 
+% interfaz de línea de comandos, cuadernos basados en navegador, herramientas para incrustar 
+% fórmulas en otros documentos y, por supuesto, muchas bibliotecas matemáticas.
+%% Desarrollo parte 1
+%
+% Crea una función que se llame _fun1_ y reciba dos parametros $\omega$ y 
+% $a$ la función debe regresar la evaluación $F(\omega)=a/(a^2+\omega^2)$,
+% esta función debe trabajr con $a\in R$ y $t\in  R^n$. Debe
+% mostrar su código en el reporte (sin ejecutar).
+%%
+%   function w=fun1(t,a)
+%   if(isreal(a))
+%      w=a./(t.^2+a^2);
+%   else
+%       display("Solo numeros reales");
+%   end
+%   end
+%
+%
+%% Desarrollo parte 2
+%
+% Construya una función que gráfique funciones de
+% $f:R\rightarrow R$ en el formato de su elección y pruebe
+% su código mostrando la gráfica de $F(\omega)$ vs $\omega$ en el intervalo
+% $[-2,2]$ para $a=1$, no debe
+% incluir el código, solo el uso de la función para mostrar la gráfica
+%
+graficar(-2:0.1:2,fun1(-2:0.1:2,1));
+%%
+% Donde el primer argumento es el vector que define el intervalo sobre el
+% que se evaluara la funcion.
+% 
+% El segundo argumento, como se puede apreciar, es la funcion evaluada en ese
+% vector. En este caso la funcion del ejercicio anterior, fun1, con a=1.
+%% Desarrollo parte 4
+% Realiza las mismas operaciones que Lathi en las secciones M1.1 a M1.4
+%  que se encuentra al final del capítulo 1 y antes de la sección de
+%  problemas, cambie los _inline_ por funciones anonimas
+%
+% *SECCION M1.1: Funciones en linea(Inline)*
+%
+%%
+f = @(t) exp(-t).*cos(2*pi*t); 
+t = 0;
+f(t)
+f(0)
+t = (-2:2);
+f(t) 
+plot(t,f(t)); 
+xlabel('t'); 
+ylabel('f(t)')
+grid;
+%%
+t = (-2:0.01:2);
+plot (t,f(t)); 
+xlabel('t'); 
+ylabel('f(t)'); 
+grid;
+%%
+% *SECCION M1.2: Operadres relacionales y la función escalon unitario*
+%
+%%
+u = @(t) t>=0;
+t=(-2:2);
+plot (t,u(t));
+xlabel('t');
+ylabel('u(t)');
+%%
+t = (-2:0.01:2); 
+plot (t,u(t)); 
+xlabel('t'); 
+ylabel('u(t)'); 
+axis ([-2 2 -0.1 1.1]);
+%%
+p = @(t) (t>=0) & (t<1);
+t = (-1:0.01:2); plot(t,p(t));
+xlabel('t'); 
+ylabel('p(t) = u(t)-u(t-1)'); 
+axis ([-1 2 -.1 1.1]);
+
+%%
+%
+% *SECCION M1.3: Visualizando operaciones en una variable independiente*
+%
+%%
+g = @(t) exp(-t).*cos(2*pi*t).*(t>=0);
+t = (-2:0.01:2); 
+plot(t,g(2*t+1)); 
+xlabel('t'); 
+ylabel('g(2t+1)'); 
+grid;
+%%
+plot(t,g(-t+1)); 
+xlabel('t'); 
+ylabel('g(-t+1)');
+grid;
+%%
+plot(t,g(2*t+1) +g(-t+1)); 
+xlabel('t'); 
+ylabel('h(t)'); 
+grid;
+%%
+%
+% *SECCION M1.4: Integración numerca y estimación de la energía de la señal*
+%
+%%
+x = @(t) exp(-t).*((t>=0)&(t<1));
+t = (0:0.01:1);
+E_x =sum(x(t).*x(t)*0.01) 
+x_squared = @(t) exp(-2*t).*((t>=0)&(t<1));
+E_x = quad(x_squared,0,1)
+g_squared = @(t) exp(-2*t).*(cos(2*pi*t).^2).*(t>=0);
+t = (0:0.001:100); 
+E_g = sum(g_squared(t)*0.001)
+E_g = quad(g_squared, 0,100)
+%% Desarrollo parte 5
+% Resuelve el problema 1.2.2 usando las herramientas del paso anterior.
+%
+% *Problema 1.2.2*
+% 
+% Para la señal $x(t)=-t[u(t+4)-u(t)] + t[u(t)-u(t-2)]$ realice las
+% graficas 
+% 
+% a) $x(t-4)$
+% 
+% b) $x(t/1.5)$
+% 
+% c) $x(-t)$
+% 
+% d) $x(2t-4)$
+% 
+% e) $x(2-t)$
+%
+%%
+x=@(t) ((-t).*((t<0)&(t>-4))) +((t).*((t>0)&(t<2)));
+    t=[-10:0.0001:10];
+    plot(t,x(t));
+    xlabel('t');
+    ylabel('x(t)');
+%%
+%
+% *a)*
+%
+%%
+t=[-10:0.0001:10];
+    plot(t,x(t-4));
+    xlabel('t');
+    ylabel('x(t-4)');
+    
+%%
+% *b)*
+%
+%%
+t=[-10:0.0001:10];
+    plot(t,x(t/1.5));
+    xlabel('t');
+    ylabel('x(t/1.5)');
+%%
+% *c)*
+%
+%%
+t=[-10:0.0001:10];
+    plot(t,x(-t));
+    xlabel('t');
+    ylabel('x(-t)');
+%%
+% *d)*
+%
+%%
+t=[-10:0.0001:10];
+    plot(t,x(2.*t-4));
+    xlabel('t');
+    ylabel('x(2t-4)');
+%%
+% *e)*
+%
+%%
+
+t=[-10:0.0001:10];
+    plot(t,x(2-t));
+    xlabel('t');
+    ylabel('x(2-t)');
+%% Desarrollo parte 6
+% 
+% Escriba una función que se llame energia que reciba como argumento una
+% función (anonima o simbolica) y que regrese el calculo de la energía,
+% para esto puede resultar útil investigar las instrucciones int , integral
+% Se presupone utilizar el código solo con funciones de energia. Muestre el
+% código sin ejecutar, y posteriormente resuelva el problema 1.1.3
+% 
+% *Función de energía*
+%
+% Tenemos la siguiente función:
+%
+%   function E = energia(f,a,b)
+%
+%       E=integral(abs(f).^2,a,b);
+%
+%   end
+%  
+% Los parametros de los que depende la energía en nuestra función son:
+% la función, el limite inferior y el limite superior para integrar.
+%
+%
+%
+%% Desarrollo parte 7
+% 
+% Escriba una función que se llame potencia que reciba como argumento una
+% función (anonima o simbolica) y que regrese el calculo de la potencia
+% para esto puede resultar útil investigar las instrucciones int , integral
+% Se presupone utilizar el código solo con funciones de potencia. Muestre
+% el código sin ejecutar, y posteriormente resuelva el problema 1.1.4
+%% 
+%   function  P = potencia(f,T)
+% 
+%       P=(1/T) * integral(f,-T/2, T/2);
+% 
+%   end
+%
+%
+%%
+% *Problema 1.1.4*
+% Encuentre la potencia de la señal periódica $x(t)=t^{3}$.
+% Encuentra también las potencias y los valores rms de:
+% 
+% a) $-x(t)$
+%
+% b) $2x(t)$ 
+%
+% c) $cx(t)$
+% 
+% *Figura $x(t)$*
+x=@(t) t.^3;
+t=-100:0.1:100;
+plot(t,x(t))
+title('Gráfica de la señal f(t)=t^3 ')
+%%
+% a) $-x(t)$
+f=(@(t) ((abs(-(t.^3))).^2));
+p = potencia(x,4)
+% RMS
+rms = sqrt(p)
+%%
+% b) $2x(t)$ 
+f=(@(t) ((abs(2.*(t.^3))).^2));
+potencia(f,4) 
+% RMS
+rms=sqrt(ans)
+
+%%
+% c) $cx(t)$
+f=@(t) ((abs((t.^3))).^2);
+potencia(f,4) 
+% RMS
+rms=sqrt(ans)
+
+##### SOURCE END #####
+--></body></html>
