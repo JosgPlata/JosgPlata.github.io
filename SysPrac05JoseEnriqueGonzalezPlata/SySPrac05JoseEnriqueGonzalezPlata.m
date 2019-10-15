@@ -1,0 +1,326 @@
+%% Práctica 5: Convolución y Correlación de señales en tiempo continuo
+%
+%
+% Grupo: 2TV1
+%
+% Unidad de aprendizaje: Señales y Sistemas
+%
+% Alumnos:
+% 
+% _Aparicio Espinoza Octavio Joel_
+%
+% _Gonzalez Plata Jose Enrique_
+%
+% _Morales Rodriguez Diego Emilio_
+%
+% _Morales Vazquez Pedro Benigno_
+% 
+% Profesor: Dr. Rafael Martínez Martínez
+%
+%
+
+
+%% Objetivos
+% 
+% * Realizar gráficas de series de Fourier exponenciales y trigonométricas
+% en tiempo continuo
+% * Manipulación de instrucciones en MATLAB
+% * Calculo númerico de los coeficientes de Fourier
+%
+%% Introducción
+%
+% Podemos calcular el coeficiente de la serie exponencial de Fourier ($D_n$) numéricamente mediante el uso de la transformada discreta de Fourier, 
+% que utiliza las muestras de una señal periódica $x(t)$ durante un cierto período. El intervalo de muestreo es de $T$   
+% segundos.  Por lo tanto, hay $N_0=\frac{T_0} { T}$ número de muestras en un período $T_0$. 
+% Para encontrar la relación entre $D_n$ y las muestras de $x(t)$ 
+%
+% $D_n=\frac{1}{T_0} * \int_{T_0} x(t)*e^{-jnwot}dt$
+%
+% $=\lim_{t\to 0}$  $\frac{1}{N_0T}$  $\sum_{k=0}^{N_0-1} x(kT)e^{-jn \omega_0 T}T$
+%
+%
+% $=\lim_{t\to 0}$  $\frac{1}{N_0}$  $\sum_{k=0}^{N_0-1} x(kT)e^{-jn\omega_0 T} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \quad (6.60)$  
+%
+%
+% donde $x(kT)$ es la k muestra de $x(t)$ y 
+%
+%
+% $N_0=\frac{T_0}{T} \quad \Omega_0=\omega_0 T= \frac{2\pi}{N_0} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad  (6.61)$
+%
+% En la práctica, es imposible que $T \rightarrow 0$ entonces calculamos el lado derecho de la ecuación $(6.60)$. Podemos hacer $T$ pequeña, pero no cero, 
+% lo que hará que los datos aumenten sin límite. Por lo tanto, ignoraremos el límite de $T$ en la ecuación $(6.60)$ con el 
+%  entendimiento implícito de que $T$ es razonablemente pequeño. El valor distinto de cero en $T$ dará como resultado algún error 
+% de cálculo, que es inevitable en cualquier evaluación numérica de una integral, el error resultante de una $T$ distinta 
+% de cero se denomina error de aliasing: este proceso de define como la alteracion de
+% la percepcion de un determinado movimiento a traves de nuestra percepcion o de cualquier optica, 
+% por ejemplo cuando vamos andando por la calle y al mirar la llanta de un vehiculo tenemos la percepcion
+% de que mueve en sentido contrario, es decir el vehiculo se mueve haia adelante pero las ruedas es como
+% si se movieran hacia atras.
+%
+% Por lo tanto, podemos expresarla
+% como
+%
+% $D_n=\frac{1}{N_0}$  $\sum_{k=0}^{N_0-1} x(kT)e^{-jn \Omega_0 T} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad (6.62a)$
+% 
+% Ahora, desde la ecuacion $(6.61)$, $\Omega_0 N_0 = 2\pi$ . Por lo tanto, $e^{j \Omega_0 (k + N 0)} = e^{j \Omega_0 k}$ y de la ecuación $(6.62a)$ se deduce que 
+%
+% $D_{n+N_0} = D_n \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \quad \qquad \qquad \qquad(6.62b)$
+% 
+% La propiedad de periodicidad $D_{n+N_0} = Dn$ significa que más allá de $n =\frac {N_0}{2}$, los coeficientes  
+% representan los valores para n negativo. Por ejemplo, cuando $N_0 = 32, D_{17} = D_{-15}, D_{18} = D_{-14}, ..., D_{31} = D_{-1}$. El ciclo se repite de nuevo desde $n = 32$ %
+%
+%% Ejemplo 6.1
+%%
+%
+% Sea la señal $e^{-\frac{t}{2}}$
+%
+% Tenemos que : 
+%
+% * $\omega _0=2$
+% * $a_0=0.504$
+% * $a_n=0.504(\frac{2}{1+16n^2})$
+% * $b_n=0.504(\frac{8n}{1+16n^2})$
+%
+% Con $c_0=a_0=0.504$ y 
+% $c_n=\sqrt{a_n^2+b_n^2} =0.504(\frac{2}{\sqrt{1+16n^2}})$
+%
+% Código para 4 armonicos
+clc;
+t0=0; % Valor inicial para calcular la serie
+% armo número de armonicos a utilizar en la gráfica
+% a, b intevalo para realizar la grafica de la serie
+tf=pi;% Valor final donde calcular la serie
+T=tf-t0;% Periodo de la función
+f=@(t) exp(-t/2); % Función original
+a0=(2/T)*integral(@(t)exp(-t/2),t0,tf); % Coeficiente a0 de la forma trigonometrica
+an=@(n) (2/T)*integral(@(t) exp(-t/2).*cos(2*pi*n*t/T),t0,tf); % Coeficiente an de la forma trigonometrica 
+bn=@(n) (2/T)*integral(@(t) exp(-t/2).*sin(2*pi*n*t/T),t0,tf); % Coeficiente bn de la forma trigonometrica
+armo=4; % Numero de armonicos
+a=-2*pi;
+b=3*pi;
+% a, b intevalo para realizar la grafica de la serie
+sft(t0,tf,an,a0,bn,f,armo,a,b) % función modificada para la forma trigonometrica
+%%
+% código para 15 armonicos
+armo=15;
+sft(t0,tf,an,a0,bn,f,armo,a,b)
+%% Ejemplo 6.2
+%%
+%
+% Sea la señal
+% $$ 
+%   f(x)= \left\{ \begin{array}{lcc}
+%             6t &    \left | t \right | <\frac{1}{2} \\
+%            \\ 6(1-t)   & \frac{1}{2} < t < \frac{3}{2} 
+%             \end{array}
+%   \right.
+% $$
+%
+% Tenemos que : 
+%
+% * $\omega_0=\pi$
+% * $a_0=0$
+% * $a_n=0$
+% * $b_n=\frac{24}{n^2\pi ^2} sin(\frac{n\pi}{2})$
+%
+% Con $c_0=a_0=0$ y 
+% $c_n=\frac{1}{2}(a_n-jb_n)=-\frac{j}{2}bn$
+%
+% Código para 4 armonicos
+t0=-0.5; % Valor inicial para calcular la serie
+% armo número de armonicos a utilizar en la gráfica
+% a, b intevalo para realizar la grafica de la serie
+tf=1.5;% Valor final donde calcular la serie
+f=@(t) (6*t).*(-1/2<t & t<1/2)+(6*(1-t)).*(1/2<=t & t<3/2); 
+armo=4; % Numero de armonicos
+d0=0;
+dn=@(n) (-12/(n.^2*pi.^2))*sin((n*pi)/2)*1j;
+a=-4;
+b=6;
+% a, b intevalo para realizar la grafica de la serie
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+%%
+% código para 15 armonicos
+armo=15;
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+%% Ejemplo 6.4
+%
+% Tenemos la señal 
+%
+% $$ 
+%   f(x)= \left\{ \begin{array}{lcc}
+%             1 &    \left | t \right | <\frac{\pi }{2} \\
+%            \\ 0   & c.o.c \\
+%            \\ f(x)=f(x+2\pi )
+%             \end{array}
+%   \right.
+% $$
+%
+% con:
+%
+% * $\omega_0=1$
+% * $a_0=1/2$
+% * $a_n=\frac{2}{n\pi } sin(\frac{n\pi}{2})$
+% * $b_n=0$
+% * $c_n=\frac{1}{2}(a_n-jb_n)=\frac{1}{n\pi } sin(\frac{n\pi}{2})$
+%
+% Código para 4 armonicos
+t0=-pi; % Valor inicial para calcular la serie
+% armo número de armonicos a utilizar en la gráfica
+% a, b intevalo para realizar la grafica de la serie
+tf=pi;% Valor final donde calcular la serie
+f=@(t) 1.*(-pi/2<t & t<pi/2); 
+armo=4; % Numero de armonicos
+d0=1/2;
+dn=@(n)(1/(n*pi))*sin((n*pi)/2);
+a=-5*pi;
+b=5*pi;
+% a, b intevalo para realizar la grafica de la serie
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+% código para 15 armonicos
+armo=15;
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+%% Ejemplo 6.5
+%
+% Sea la señal $e^{-\frac{t}{2}}$
+%
+% Tenemos que : 
+%
+% * $\omega _0=2$
+% * $a_0=0.504$
+% * $a_n=0.504(\frac{2}{1+16n^2})$
+% * $b_n=0.504(\frac{8n}{1+16n^2})$
+% * $d_n=\frac{0.504}{1+j4n}$
+%
+% Código para 4 armonicos
+t0=0; % Valor inicial para calcular la serie
+% armo número de armonicos a utilizar en la gráfica
+% a, b intevalo para realizar la grafica de la serie
+tf=pi;% Valor final donde calcular la serie
+f=@(t) exp(-t/2); 
+armo=4; % Numero de armonicos
+d0=1/2;
+dn=@(n)(0.504/(1+1j*4*n));
+a=-2*pi;
+b=3*pi;
+% a, b intevalo para realizar la grafica de la serie
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+% código para 15 armonicos
+armo=15;
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+%% Ejemplo 6.7
+%
+% Sea la señal $\delta_{T0}(t)$ el tren de pulsos con $T_0=3$.
+%
+% Tenemos que : 
+%
+% * $\omega _0=\frac{2\pi}{3}$
+% * $D_0=C_0=\frac{1}{3}$
+% * $D_n=\frac{1}{3}$
+% * $C_n=2 |D_n |=\frac{2}{3}$
+%
+% Código para 4 armonicos
+t0=0; % Valor inicial para calcular la serie
+% armo número de armonicos a utilizar en la gráfica
+% a, b intevalo para realizar la grafica de la serie
+tf=3;% Valor final donde calcular la serie
+f=@(t) 1.*(t==0 & t==3)+0.*(t<0 & t>0 & t<3 & t>3); 
+armo=4; % Numero de armonicos
+d0=1/3;
+dn=@(n) 1/3;
+a=-8;
+b=7;
+% a, b intevalo para realizar la grafica de la serie
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+%%
+% código para 15 armonicos
+armo=15;
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+%% Ejemplo para computadora C6.2
+%
+f=@(t) exp(-t/2);
+t=-10:0.001:10;
+plot(t,f(mod(t,pi))) %%señal periodica
+
+sumterms = zeros(15, length(t)); sumterms(1,:) = 0.504;
+for n = 1:size(sumterms,1)-1;
+sumterms(n+1,:) = 0.504/(1+4*n*1j).*exp(2*n*t*1j);
+end
+x_N = cumsum (sumterms); figure(1); clf; ind = 0;
+for N = [0,1:2:size(sumterms, 1)-1],ind = ind+1; subplot (3,3,ind);
+plot (t,x_N(N+1,:), 'k',t,f(mod(t,pi))+0j, 'k--'); axis ([-10 10 -0.5 1.5]);
+xlabel ('t'); ylabel (['x_{',num2str(N),'} (t)']);
+end
+%
+%% Aproximación de coeficientes
+%
+% codigo para trapecio compuesto
+%
+% <include>trapecio.m</include>
+%
+% Usando la misma función que lathi en el ejemplo C6.4 y 6.1
+% la señal es $e^{-\frac{t}{2}}$ 
+%
+% Corriendo el código para calcular los 5 primeros coeficientes:
+T_0=pi;
+W_0=2*pi/T_0;
+DT_0=trapecio(@(t) exp(-t/2),0,pi)/pi;
+DT_1=trapecio(@(t) exp(-t/2)*exp(-1j*W_0*t),0,pi)/pi;
+DT_2=trapecio(@(t) exp(-t/2)*exp(-2j*W_0*t),0,pi)/pi;
+DT_3=trapecio(@(t) exp(-t/2)*exp(-3j*W_0*t),0,pi)/pi;
+DT_4=trapecio(@(t) exp(-t/2)*exp(-4j*W_0*t),0,pi)/pi;
+DT_n=[DT_0,DT_1,DT_2,DT_3,DT_4];
+magnitudTrapecio=abs(DT_n);
+%%
+%
+% Código de Lathi:
+T_0 = pi; N_0 = 256; T = T_0/N_0; t = (0:T:T*(N_0-1))'; M = 10; 
+x = exp(-t/2); x(1) = (exp(-pi/2) + 1)/2;
+D_n = fft (x)/N_0; n = [-N_0/2:N_0/2-1]'; 
+clf; subplot (2, 2, 1); stem(n, abs(fftshift (D_n)),'k'); 
+axis ([-M M -.1 .6]); xlabel('n'); ylabel('|D_n|'); 
+subplot (2, 2, 2); stem(n, angle(fftshift(D_n)),'k'); 
+axis([-M M -pi pi]); xlabel ('n'); ylabel('\angle D n [rad]');
+n = [0:M]; C_n(1) = abs(D_n(1)); C_n(2:M+1) = 2*abs (D_n(2:M+1)); 
+theta_n(1) = angle(D_n(1)); theta_n(2:M+1) = angle(D_n(2:M+1)); 
+subplot (2, 2, 3); stem(n,C_n,'k');
+xlabel ('n'); ylabel('C_n'); 
+subplot (2, 2, 4); stem(n,theta_n,'k'); 
+xlabel ('n'); ylabel('\theta n [rad]');
+clear magnitudLathi
+for a = 1:1:5
+magnitudTransformada(a)=abs(fftshift(D_n(a)));
+end
+%
+%%
+%
+% De forma exacta sabemos que $D_n=\frac{0.504}{1+j4n}$ por el ejemplo 6.5.
+% Aplicando código para los coeficientes exactos:
+%
+DE_n(1)=0.504;
+for n=2:1:5
+   DE_n(n)=abs(0.504/(1+4j*(n-1)));
+end
+%%
+% comparando los metodos
+%
+T = table(magnitudTrapecio',magnitudTransformada',DE_n');T(1:5,:);
+T.Properties.RowNames = {'D0','D1','D2','D3','D4'};
+T.Properties.VariableNames{'Var1'} = 'Trapecio';
+T.Properties.VariableNames{'Var2'} = 'Transformada';
+T.Properties.VariableNames{'Var3'} = 'Exacta'
+%%
+% Diferencia entre ambos metodos y el valor exacto:
+%
+DiferenciaTrapecio=abs(magnitudTrapecio-DE_n);
+DiferenciaTransformada=abs(magnitudTransformada-DE_n);
+
+T = table(DiferenciaTrapecio',DiferenciaLathi');T(1:5,:);
+T.Properties.RowNames = {'D0','D1','D2','D3','D4'};
+T.Properties.VariableNames{'Var1'} = 'Trapecio';
+T.Properties.VariableNames{'Var2'} = 'Transformada'
+%%
+% como se puede notar el método por la transformada discreta de
+% Fourier(TDF) se acerca más y tiene menos error que a diferencia del
+% Trapecio, entonces es más exacta.
+% 

@@ -1,0 +1,582 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Pr&aacute;ctica 5: Convoluci&oacute;n y Correlaci&oacute;n de se&ntilde;ales en tiempo continuo</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-10-15"><meta name="DC.source" content="SySPrac05JoseEnriqueGonzalezPlata.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 5: Convoluci&oacute;n y Correlaci&oacute;n de se&ntilde;ales en tiempo continuo</h1><!--introduction--><p>Grupo: 2TV1</p><p>Unidad de aprendizaje: Se&ntilde;ales y Sistemas</p><p>Alumnos:</p><p><i>Aparicio Espinoza Octavio Joel</i></p><p><i>Gonzalez Plata Jose Enrique</i></p><p><i>Morales Rodriguez Diego Emilio</i></p><p><i>Morales Vazquez Pedro Benigno</i></p><p>Profesor: Dr. Rafael Mart&iacute;nez Mart&iacute;nez</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Objetivos</a></li><li><a href="#2">Introducci&oacute;n</a></li><li><a href="#3">Ejemplo 6.1</a></li><li><a href="#6">Ejemplo 6.2</a></li><li><a href="#9">Ejemplo 6.4</a></li><li><a href="#10">Ejemplo 6.5</a></li><li><a href="#11">Ejemplo 6.7</a></li><li><a href="#13">Ejemplo para computadora C6.2</a></li><li><a href="#14">Aproximaci&oacute;n de coeficientes</a></li></ul></div><h2 id="1">Objetivos</h2><div><ul><li>Realizar gr&aacute;ficas de series de Fourier exponenciales y trigonom&eacute;tricas en tiempo continuo</li><li>Manipulaci&oacute;n de instrucciones en MATLAB</li><li>Calculo n&uacute;merico de los coeficientes de Fourier</li></ul></div><h2 id="2">Introducci&oacute;n</h2><p>Podemos calcular el coeficiente de la serie exponencial de Fourier (<img src="SySPrac05JoseEnriqueGonzalezPlata_eq10922897471658752443.png" alt="$D_n$" style="width:18px;height:13px;">) num&eacute;ricamente mediante el uso de la transformada discreta de Fourier, que utiliza las muestras de una se&ntilde;al peri&oacute;dica <img src="SySPrac05JoseEnriqueGonzalezPlata_eq14833433867325483769.png" alt="$x(t)$" style="width:23px;height:15px;"> durante un cierto per&iacute;odo. El intervalo de muestreo es de <img src="SySPrac05JoseEnriqueGonzalezPlata_eq14047577632175690031.png" alt="$T$" style="width:11px;height:10px;"> segundos.  Por lo tanto, hay <img src="SySPrac05JoseEnriqueGonzalezPlata_eq12778159265996620458.png" alt="$N_0=\frac{T_0} { T}$" style="width:50px;height:18px;"> n&uacute;mero de muestras en un per&iacute;odo <img src="SySPrac05JoseEnriqueGonzalezPlata_eq09699377331652163485.png" alt="$T_0$" style="width:14px;height:13px;">. Para encontrar la relaci&oacute;n entre <img src="SySPrac05JoseEnriqueGonzalezPlata_eq10922897471658752443.png" alt="$D_n$" style="width:18px;height:13px;"> y las muestras de <img src="SySPrac05JoseEnriqueGonzalezPlata_eq14833433867325483769.png" alt="$x(t)$" style="width:23px;height:15px;"></p><p><img src="SySPrac05JoseEnriqueGonzalezPlata_eq04846782943684232360.png" alt="$D_n=\frac{1}{T_0} * \int_{T_0} x(t)*e^{-jnwot}dt$" style="width:182px;height:20px;"></p><p><img src="SySPrac05JoseEnriqueGonzalezPlata_eq02527626062932299428.png" alt="$=\lim_{t\to 0}$" style="width:54px;height:13px;">  <img src="SySPrac05JoseEnriqueGonzalezPlata_eq06007010625991037612.png" alt="$\frac{1}{N_0T}$" style="width:21px;height:20px;">  <img src="SySPrac05JoseEnriqueGonzalezPlata_eq05075630132534389314.png" alt="$\sum_{k=0}^{N_0-1} x(kT)e^{-jn \omega_0 T}T$" style="width:138px;height:19px;"></p><p><img src="SySPrac05JoseEnriqueGonzalezPlata_eq02527626062932299428.png" alt="$=\lim_{t\to 0}$" style="width:54px;height:13px;">  <img src="SySPrac05JoseEnriqueGonzalezPlata_eq10651586341341366428.png" alt="$\frac{1}{N_0}$" style="width:13px;height:20px;">  <img src="SySPrac05JoseEnriqueGonzalezPlata_eq03462643349108089759.png" alt="$\sum_{k=0}^{N_0-1} x(kT)e^{-jn\omega_0 T} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \quad (6.60)$" style="width:442px;height:19px;"></p><p>donde <img src="SySPrac05JoseEnriqueGonzalezPlata_eq06905719444939904769.png" alt="$x(kT)$" style="width:37px;height:15px;"> es la k muestra de <img src="SySPrac05JoseEnriqueGonzalezPlata_eq14833433867325483769.png" alt="$x(t)$" style="width:23px;height:15px;"> y</p><p><img src="SySPrac05JoseEnriqueGonzalezPlata_eq16208084645565672671.png" alt="$N_0=\frac{T_0}{T} \quad \Omega_0=\omega_0 T= \frac{2\pi}{N_0} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad  (6.61)$" style="width:522px;height:20px;"></p><p>En la pr&aacute;ctica, es imposible que <img src="SySPrac05JoseEnriqueGonzalezPlata_eq05130068492524870277.png" alt="$T \rightarrow 0$" style="width:41px;height:11px;"> entonces calculamos el lado derecho de la ecuaci&oacute;n <img src="SySPrac05JoseEnriqueGonzalezPlata_eq01202519233174169810.png" alt="$(6.60)$" style="width:35px;height:15px;">. Podemos hacer <img src="SySPrac05JoseEnriqueGonzalezPlata_eq14047577632175690031.png" alt="$T$" style="width:11px;height:10px;"> peque&ntilde;a, pero no cero, lo que har&aacute; que los datos aumenten sin l&iacute;mite. Por lo tanto, ignoraremos el l&iacute;mite de <img src="SySPrac05JoseEnriqueGonzalezPlata_eq14047577632175690031.png" alt="$T$" style="width:11px;height:10px;"> en la ecuaci&oacute;n <img src="SySPrac05JoseEnriqueGonzalezPlata_eq01202519233174169810.png" alt="$(6.60)$" style="width:35px;height:15px;"> con el  entendimiento impl&iacute;cito de que <img src="SySPrac05JoseEnriqueGonzalezPlata_eq14047577632175690031.png" alt="$T$" style="width:11px;height:10px;"> es razonablemente peque&ntilde;o. El valor distinto de cero en <img src="SySPrac05JoseEnriqueGonzalezPlata_eq14047577632175690031.png" alt="$T$" style="width:11px;height:10px;"> dar&aacute; como resultado alg&uacute;n error de c&aacute;lculo, que es inevitable en cualquier evaluaci&oacute;n num&eacute;rica de una integral, el error resultante de una <img src="SySPrac05JoseEnriqueGonzalezPlata_eq14047577632175690031.png" alt="$T$" style="width:11px;height:10px;"> distinta de cero se denomina error de aliasing: este proceso de define como la alteracion de la percepcion de un determinado movimiento a traves de nuestra percepcion o de cualquier optica, por ejemplo cuando vamos andando por la calle y al mirar la llanta de un vehiculo tenemos la percepcion de que mueve en sentido contrario, es decir el vehiculo se mueve haia adelante pero las ruedas es como si se movieran hacia atras.</p><p>Por lo tanto, podemos expresarla como</p><p><img src="SySPrac05JoseEnriqueGonzalezPlata_eq06802443447245725156.png" alt="$D_n=\frac{1}{N_0}$" style="width:53px;height:20px;">  <img src="SySPrac05JoseEnriqueGonzalezPlata_eq07131276567898707332.png" alt="$\sum_{k=0}^{N_0-1} x(kT)e^{-jn \Omega_0 T} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad (6.62a)$" style="width:466px;height:19px;"></p><p>Ahora, desde la ecuacion <img src="SySPrac05JoseEnriqueGonzalezPlata_eq01775126483167422431.png" alt="$(6.61)$" style="width:35px;height:15px;">, <img src="SySPrac05JoseEnriqueGonzalezPlata_eq01655125422522937491.png" alt="$\Omega_0 N_0 = 2\pi$" style="width:69px;height:14px;"> . Por lo tanto, <img src="SySPrac05JoseEnriqueGonzalezPlata_eq04275417064133659254.png" alt="$e^{j \Omega_0 (k + N 0)} = e^{j \Omega_0 k}$" style="width:109px;height:14px;"> y de la ecuaci&oacute;n <img src="SySPrac05JoseEnriqueGonzalezPlata_eq04627234999241414460.png" alt="$(6.62a)$" style="width:43px;height:15px;"> se deduce que</p><p><img src="SySPrac05JoseEnriqueGonzalezPlata_eq01282540123843591952.png" alt="$D_{n+N_0} = D_n \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \quad \qquad \qquad \qquad(6.62b)$" style="width:517px;height:15px;"></p><p>La propiedad de periodicidad <img src="SySPrac05JoseEnriqueGonzalezPlata_eq04256695719325100830.png" alt="$D_{n+N_0} = Dn$" style="width:81px;height:14px;"> significa que m&aacute;s all&aacute; de <img src="SySPrac05JoseEnriqueGonzalezPlata_eq10136914576298859002.png" alt="$n =\frac {N_0}{2}$" style="width:43px;height:18px;">, los coeficientes representan los valores para n negativo. Por ejemplo, cuando <img src="SySPrac05JoseEnriqueGonzalezPlata_eq08416247435205353498.png" alt="$N_0 = 32, D_{17} = D_{-15}, D_{18} = D_{-14}, ..., D_{31} = D_{-1}$" style="width:305px;height:14px;">. El ciclo se repite de nuevo desde <img src="SySPrac05JoseEnriqueGonzalezPlata_eq09907834615118520930.png" alt="$n = 32$" style="width:42px;height:10px;"> %</p><h2 id="3">Ejemplo 6.1</h2><p>Sea la se&ntilde;al <img src="SySPrac05JoseEnriqueGonzalezPlata_eq16621126990680777544.png" alt="$e^{-\frac{t}{2}}$" style="width:20px;height:15px;"></p><p>Tenemos que :</p><div><ul><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq08256309117042923277.png" alt="$\omega _0=2$" style="width:42px;height:13px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq04136712373654737460.png" alt="$a_0=0.504$" style="width:66px;height:13px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq01625613546055131048.png" alt="$a_n=0.504(\frac{2}{1+16n^2})$" style="width:115px;height:19px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq11801000323019916269.png" alt="$b_n=0.504(\frac{8n}{1+16n^2})$" style="width:114px;height:19px;"></li></ul></div><p>Con <img src="SySPrac05JoseEnriqueGonzalezPlata_eq03217784634587869665.png" alt="$c_0=a_0=0.504$" style="width:98px;height:13px;"> y <img src="SySPrac05JoseEnriqueGonzalezPlata_eq07441295812913691283.png" alt="$c_n=\sqrt{a_n^2+b_n^2} =0.504(\frac{2}{\sqrt{1+16n^2}})$" style="width:202px;height:22px;"></p><p>C&oacute;digo para 4 armonicos</p><pre class="codeinput">clc;
+t0=0; <span class="comment">% Valor inicial para calcular la serie</span>
+<span class="comment">% armo n&uacute;mero de armonicos a utilizar en la gr&aacute;fica</span>
+<span class="comment">% a, b intevalo para realizar la grafica de la serie</span>
+tf=pi;<span class="comment">% Valor final donde calcular la serie</span>
+T=tf-t0;<span class="comment">% Periodo de la funci&oacute;n</span>
+f=@(t) exp(-t/2); <span class="comment">% Funci&oacute;n original</span>
+a0=(2/T)*integral(@(t)exp(-t/2),t0,tf); <span class="comment">% Coeficiente a0 de la forma trigonometrica</span>
+an=@(n) (2/T)*integral(@(t) exp(-t/2).*cos(2*pi*n*t/T),t0,tf); <span class="comment">% Coeficiente an de la forma trigonometrica</span>
+bn=@(n) (2/T)*integral(@(t) exp(-t/2).*sin(2*pi*n*t/T),t0,tf); <span class="comment">% Coeficiente bn de la forma trigonometrica</span>
+armo=4; <span class="comment">% Numero de armonicos</span>
+a=-2*pi;
+b=3*pi;
+<span class="comment">% a, b intevalo para realizar la grafica de la serie</span>
+sft(t0,tf,an,a0,bn,f,armo,a,b) <span class="comment">% funci&oacute;n modificada para la forma trigonometrica</span>
+</pre><img vspace="5" hspace="5" src="SySPrac05JoseEnriqueGonzalezPlata_01.png" alt=""> <p>c&oacute;digo para 15 armonicos</p><pre class="codeinput">armo=15;
+sft(t0,tf,an,a0,bn,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac05JoseEnriqueGonzalezPlata_02.png" alt=""> <h2 id="6">Ejemplo 6.2</h2><p>Sea la se&ntilde;al <img src="SySPrac05JoseEnriqueGonzalezPlata_eq02910054990819156987.png" alt="$$   f(x)= \left\{ \begin{array}{lcc}             6t &amp;    \left | t \right | <\frac{1}{2} \\            \\ 6(1-t)   &amp; \frac{1}{2} < t < \frac{3}{2}             \end{array}   \right. $$" style="width:192px;height:54px;"></p><p>Tenemos que :</p><div><ul><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq04264947259095529399.png" alt="$\omega_0=\pi$" style="width:43px;height:10px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq00024397344814182641.png" alt="$a_0=0$" style="width:40px;height:13px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq13787390456160960767.png" alt="$a_n=0$" style="width:41px;height:13px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq02585594429264896176.png" alt="$b_n=\frac{24}{n^2\pi ^2} sin(\frac{n\pi}{2})$" style="width:104px;height:19px;"></li></ul></div><p>Con <img src="SySPrac05JoseEnriqueGonzalezPlata_eq04203734092798616244.png" alt="$c_0=a_0=0$" style="width:71px;height:13px;"> y <img src="SySPrac05JoseEnriqueGonzalezPlata_eq14721663702471271700.png" alt="$c_n=\frac{1}{2}(a_n-jb_n)=-\frac{j}{2}bn$" style="width:160px;height:19px;"></p><p>C&oacute;digo para 4 armonicos</p><pre class="codeinput">t0=-0.5; <span class="comment">% Valor inicial para calcular la serie</span>
+<span class="comment">% armo n&uacute;mero de armonicos a utilizar en la gr&aacute;fica</span>
+<span class="comment">% a, b intevalo para realizar la grafica de la serie</span>
+tf=1.5;<span class="comment">% Valor final donde calcular la serie</span>
+f=@(t) (6*t).*(-1/2&lt;t &amp; t&lt;1/2)+(6*(1-t)).*(1/2&lt;=t &amp; t&lt;3/2);
+armo=4; <span class="comment">% Numero de armonicos</span>
+d0=0;
+dn=@(n) (-12/(n.^2*pi.^2))*sin((n*pi)/2)*1j;
+a=-4;
+b=6;
+<span class="comment">% a, b intevalo para realizar la grafica de la serie</span>
+sfc(t0,tf,dn,d0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac05JoseEnriqueGonzalezPlata_03.png" alt=""> <p>c&oacute;digo para 15 armonicos</p><pre class="codeinput">armo=15;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac05JoseEnriqueGonzalezPlata_04.png" alt=""> <h2 id="9">Ejemplo 6.4</h2><p>Tenemos la se&ntilde;al</p><p><img src="SySPrac05JoseEnriqueGonzalezPlata_eq01855853898815170468.png" alt="$$&#xA;  f(x)= \left\{ \begin{array}{lcc}&#xA;            1 &amp;    \left | t \right | <\frac{\pi }{2} \\&#xA;           \\ 0   &amp; c.o.c \\&#xA;           \\ f(x)=f(x+2\pi )&#xA;            \end{array}&#xA;  \right.&#xA;$$" style="width:234px;height:89px;"></p><p>con:</p><div><ul><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq09535957377104895212.png" alt="$\omega_0=1$" style="width:41px;height:13px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq07208353696774383563.png" alt="$a_0=1/2$" style="width:54px;height:15px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq16199470143046784868.png" alt="$a_n=\frac{2}{n\pi } sin(\frac{n\pi}{2})$" style="width:97px;height:19px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq16963053414542378664.png" alt="$b_n=0$" style="width:39px;height:13px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq03830518746741260065.png" alt="$c_n=\frac{1}{2}(a_n-jb_n)=\frac{1}{n\pi } sin(\frac{n\pi}{2})$" style="width:187px;height:19px;"></li></ul></div><p>C&oacute;digo para 4 armonicos</p><pre class="codeinput">t0=-pi; <span class="comment">% Valor inicial para calcular la serie</span>
+<span class="comment">% armo n&uacute;mero de armonicos a utilizar en la gr&aacute;fica</span>
+<span class="comment">% a, b intevalo para realizar la grafica de la serie</span>
+tf=pi;<span class="comment">% Valor final donde calcular la serie</span>
+f=@(t) 1.*(-pi/2&lt;t &amp; t&lt;pi/2);
+armo=4; <span class="comment">% Numero de armonicos</span>
+d0=1/2;
+dn=@(n)(1/(n*pi))*sin((n*pi)/2);
+a=-5*pi;
+b=5*pi;
+<span class="comment">% a, b intevalo para realizar la grafica de la serie</span>
+sfc(t0,tf,dn,d0,f,armo,a,b)
+<span class="comment">% c&oacute;digo para 15 armonicos</span>
+armo=15;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac05JoseEnriqueGonzalezPlata_05.png" alt=""> <h2 id="10">Ejemplo 6.5</h2><p>Sea la se&ntilde;al <img src="SySPrac05JoseEnriqueGonzalezPlata_eq16621126990680777544.png" alt="$e^{-\frac{t}{2}}$" style="width:20px;height:15px;"></p><p>Tenemos que :</p><div><ul><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq08256309117042923277.png" alt="$\omega _0=2$" style="width:42px;height:13px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq04136712373654737460.png" alt="$a_0=0.504$" style="width:66px;height:13px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq01625613546055131048.png" alt="$a_n=0.504(\frac{2}{1+16n^2})$" style="width:115px;height:19px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq11801000323019916269.png" alt="$b_n=0.504(\frac{8n}{1+16n^2})$" style="width:114px;height:19px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq05795946613683933922.png" alt="$d_n=\frac{0.504}{1+j4n}$" style="width:66px;height:21px;"></li></ul></div><p>C&oacute;digo para 4 armonicos</p><pre class="codeinput">t0=0; <span class="comment">% Valor inicial para calcular la serie</span>
+<span class="comment">% armo n&uacute;mero de armonicos a utilizar en la gr&aacute;fica</span>
+<span class="comment">% a, b intevalo para realizar la grafica de la serie</span>
+tf=pi;<span class="comment">% Valor final donde calcular la serie</span>
+f=@(t) exp(-t/2);
+armo=4; <span class="comment">% Numero de armonicos</span>
+d0=1/2;
+dn=@(n)(0.504/(1+1j*4*n));
+a=-2*pi;
+b=3*pi;
+<span class="comment">% a, b intevalo para realizar la grafica de la serie</span>
+sfc(t0,tf,dn,d0,f,armo,a,b)
+<span class="comment">% c&oacute;digo para 15 armonicos</span>
+armo=15;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac05JoseEnriqueGonzalezPlata_06.png" alt=""> <h2 id="11">Ejemplo 6.7</h2><p>Sea la se&ntilde;al <img src="SySPrac05JoseEnriqueGonzalezPlata_eq15071912731360795721.png" alt="$\delta_{T0}(t)$" style="width:35px;height:15px;"> el tren de pulsos con <img src="SySPrac05JoseEnriqueGonzalezPlata_eq04356084194358646376.png" alt="$T_0=3$" style="width:41px;height:13px;">.</p><p>Tenemos que :</p><div><ul><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq02971287681405860109.png" alt="$\omega _0=\frac{2\pi}{3}$" style="width:48px;height:19px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq16488578021791267202.png" alt="$D_0=C_0=\frac{1}{3}$" style="width:81px;height:19px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq07454021401898895150.png" alt="$D_n=\frac{1}{3}$" style="width:46px;height:19px;"></li><li><img src="SySPrac05JoseEnriqueGonzalezPlata_eq17944527513510115075.png" alt="$C_n=2 |D_n |=\frac{2}{3}$" style="width:98px;height:19px;"></li></ul></div><p>C&oacute;digo para 4 armonicos</p><pre class="codeinput">t0=0; <span class="comment">% Valor inicial para calcular la serie</span>
+<span class="comment">% armo n&uacute;mero de armonicos a utilizar en la gr&aacute;fica</span>
+<span class="comment">% a, b intevalo para realizar la grafica de la serie</span>
+tf=3;<span class="comment">% Valor final donde calcular la serie</span>
+f=@(t) 1.*(t==0 &amp; t==3)+0.*(t&lt;0 &amp; t&gt;0 &amp; t&lt;3 &amp; t&gt;3);
+armo=4; <span class="comment">% Numero de armonicos</span>
+d0=1/3;
+dn=@(n) 1/3;
+a=-8;
+b=7;
+<span class="comment">% a, b intevalo para realizar la grafica de la serie</span>
+sfc(t0,tf,dn,d0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac05JoseEnriqueGonzalezPlata_07.png" alt=""> <p>c&oacute;digo para 15 armonicos</p><pre class="codeinput">armo=15;
+sfc(t0,tf,dn,d0,f,armo,a,b)
+</pre><img vspace="5" hspace="5" src="SySPrac05JoseEnriqueGonzalezPlata_08.png" alt=""> <h2 id="13">Ejemplo para computadora C6.2</h2><pre class="codeinput">f=@(t) exp(-t/2);
+t=-10:0.001:10;
+plot(t,f(mod(t,pi))) <span class="comment">%%se&ntilde;al periodica</span>
+
+sumterms = zeros(15, length(t)); sumterms(1,:) = 0.504;
+<span class="keyword">for</span> n = 1:size(sumterms,1)-1;
+sumterms(n+1,:) = 0.504/(1+4*n*1j).*exp(2*n*t*1j);
+<span class="keyword">end</span>
+x_N = cumsum (sumterms); figure(1); clf; ind = 0;
+<span class="keyword">for</span> N = [0,1:2:size(sumterms, 1)-1],ind = ind+1; subplot (3,3,ind);
+plot (t,x_N(N+1,:), <span class="string">'k'</span>,t,f(mod(t,pi))+0j, <span class="string">'k--'</span>); axis ([-10 10 -0.5 1.5]);
+xlabel (<span class="string">'t'</span>); ylabel ([<span class="string">'x_{'</span>,num2str(N),<span class="string">'} (t)'</span>]);
+<span class="keyword">end</span>
+<span class="comment">%</span>
+</pre><pre class="codeoutput">Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+Warning: Imaginary parts of complex X and/or Y arguments ignored 
+</pre><img vspace="5" hspace="5" src="SySPrac05JoseEnriqueGonzalezPlata_09.png" alt=""> <h2 id="14">Aproximaci&oacute;n de coeficientes</h2><p>codigo para trapecio compuesto</p><pre class="language-matlab">
+<span class="keyword">function</span> r=trapecio(f,a,b)
+<span class="comment">% f: funci&oacute;n a integrar</span>
+<span class="comment">% [a,b] Intervalo de integraci&oacute;n</span>
+n=15;
+h=(b-a)/n;
+u=(b-a)/2;
+sum=0;
+ft=sym(f);
+<span class="keyword">for</span> l=1:1:(n-1)
+    sum=sum+f(a+l*h);
+<span class="keyword">end</span>
+ddf=diff(diff(ft));
+fu=matlabFunction(ddf);
+r=(h/2)*(f(a)+f(b))+h*sum-(((b-a)/12)*h^2)*fu(u);
+<span class="keyword">end</span>
+
+</pre><p>Usando la misma funci&oacute;n que lathi en el ejemplo C6.4 y 6.1 la se&ntilde;al es <img src="SySPrac05JoseEnriqueGonzalezPlata_eq16621126990680777544.png" alt="$e^{-\frac{t}{2}}$" style="width:20px;height:15px;"></p><p>Corriendo el c&oacute;digo para calcular los 5 primeros coeficientes:</p><pre class="codeinput">T_0=pi;
+W_0=2*pi/T_0;
+DT_0=trapecio(@(t) exp(-t/2),0,pi)/pi;
+DT_1=trapecio(@(t) exp(-t/2)*exp(-1j*W_0*t),0,pi)/pi;
+DT_2=trapecio(@(t) exp(-t/2)*exp(-2j*W_0*t),0,pi)/pi;
+DT_3=trapecio(@(t) exp(-t/2)*exp(-3j*W_0*t),0,pi)/pi;
+DT_4=trapecio(@(t) exp(-t/2)*exp(-4j*W_0*t),0,pi)/pi;
+DT_n=[DT_0,DT_1,DT_2,DT_3,DT_4];
+magnitudTrapecio=abs(DT_n);
+</pre><p>C&oacute;digo de Lathi:</p><pre class="codeinput">T_0 = pi; N_0 = 256; T = T_0/N_0; t = (0:T:T*(N_0-1))'; M = 10;
+x = exp(-t/2); x(1) = (exp(-pi/2) + 1)/2;
+D_n = fft (x)/N_0; n = [-N_0/2:N_0/2-1]';
+clf; subplot (2, 2, 1); stem(n, abs(fftshift (D_n)),<span class="string">'k'</span>);
+axis ([-M M -.1 .6]); xlabel(<span class="string">'n'</span>); ylabel(<span class="string">'|D_n|'</span>);
+subplot (2, 2, 2); stem(n, angle(fftshift(D_n)),<span class="string">'k'</span>);
+axis([-M M -pi pi]); xlabel (<span class="string">'n'</span>); ylabel(<span class="string">'\angle D n [rad]'</span>);
+n = [0:M]; C_n(1) = abs(D_n(1)); C_n(2:M+1) = 2*abs (D_n(2:M+1));
+theta_n(1) = angle(D_n(1)); theta_n(2:M+1) = angle(D_n(2:M+1));
+subplot (2, 2, 3); stem(n,C_n,<span class="string">'k'</span>);
+xlabel (<span class="string">'n'</span>); ylabel(<span class="string">'C_n'</span>);
+subplot (2, 2, 4); stem(n,theta_n,<span class="string">'k'</span>);
+xlabel (<span class="string">'n'</span>); ylabel(<span class="string">'\theta n [rad]'</span>);
+clear <span class="string">magnitudLathi</span>
+<span class="keyword">for</span> a = 1:1:5
+magnitudTransformada(a)=abs(fftshift(D_n(a)));
+<span class="keyword">end</span>
+<span class="comment">%</span>
+</pre><img vspace="5" hspace="5" src="SySPrac05JoseEnriqueGonzalezPlata_10.png" alt=""> <p>De forma exacta sabemos que <img src="SySPrac05JoseEnriqueGonzalezPlata_eq17335151408420185488.png" alt="$D_n=\frac{0.504}{1+j4n}$" style="width:70px;height:21px;"> por el ejemplo 6.5. Aplicando c&oacute;digo para los coeficientes exactos:</p><pre class="codeinput">DE_n(1)=0.504;
+<span class="keyword">for</span> n=2:1:5
+   DE_n(n)=abs(0.504/(1+4j*(n-1)));
+<span class="keyword">end</span>
+</pre><p>comparando los metodos</p><pre class="codeinput">T = table(magnitudTrapecio',magnitudTransformada',DE_n');T(1:5,:);
+T.Properties.RowNames = {<span class="string">'D0'</span>,<span class="string">'D1'</span>,<span class="string">'D2'</span>,<span class="string">'D3'</span>,<span class="string">'D4'</span>};
+T.Properties.VariableNames{<span class="string">'Var1'</span>} = <span class="string">'Trapecio'</span>;
+T.Properties.VariableNames{<span class="string">'Var2'</span>} = <span class="string">'Transformada'</span>;
+T.Properties.VariableNames{<span class="string">'Var3'</span>} = <span class="string">'Exacta'</span>
+</pre><pre class="codeoutput">
+T =
+
+  5&times;3 table
+
+          Trapecio    Transformada     Exacta 
+          ________    ____________    ________
+
+    D0     0.50432     0.50428           0.504
+    D1     0.11596      0.1223         0.12224
+    D2    0.073584    0.062536        0.062514
+    D3    0.061407    0.041859        0.041855
+    D4     0.11486    0.031431        0.031439
+
+</pre><p>Diferencia entre ambos metodos y el valor exacto:</p><pre class="codeinput">DiferenciaTrapecio=abs(magnitudTrapecio-DE_n);
+DiferenciaTransformada=abs(magnitudTransformada-DE_n);
+
+T = table(DiferenciaTrapecio',DiferenciaLathi');T(1:5,:);
+T.Properties.RowNames = {<span class="string">'D0'</span>,<span class="string">'D1'</span>,<span class="string">'D2'</span>,<span class="string">'D3'</span>,<span class="string">'D4'</span>};
+T.Properties.VariableNames{<span class="string">'Var1'</span>} = <span class="string">'Trapecio'</span>;
+T.Properties.VariableNames{<span class="string">'Var2'</span>} = <span class="string">'Transformada'</span>
+</pre><pre class="codeoutput">
+T =
+
+  5&times;2 table
+
+           Trapecio     Transformada
+          __________    ____________
+
+    D0    0.00032362    0.00028111  
+    D1     0.0062798    6.2039e-05  
+    D2      0.011071    2.2307e-05  
+    D3      0.019552    4.4227e-06  
+    D4      0.083424    7.7341e-06  
+
+</pre><p>como se puede notar el m&eacute;todo por la transformada discreta de Fourier(TDF) se acerca m&aacute;s y tiene menos error que a diferencia del Trapecio, entonces es m&aacute;s exacta.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Práctica 5: Convolución y Correlación de señales en tiempo continuo
+%
+%
+% Grupo: 2TV1
+%
+% Unidad de aprendizaje: Señales y Sistemas
+%
+% Alumnos:
+% 
+% _Aparicio Espinoza Octavio Joel_
+%
+% _Gonzalez Plata Jose Enrique_
+%
+% _Morales Rodriguez Diego Emilio_
+%
+% _Morales Vazquez Pedro Benigno_
+% 
+% Profesor: Dr. Rafael Martínez Martínez
+%
+%
+
+
+%% Objetivos
+% 
+% * Realizar gráficas de series de Fourier exponenciales y trigonométricas
+% en tiempo continuo
+% * Manipulación de instrucciones en MATLAB
+% * Calculo númerico de los coeficientes de Fourier
+%
+%% Introducción
+%
+% Podemos calcular el coeficiente de la serie exponencial de Fourier ($D_n$) numéricamente mediante el uso de la transformada discreta de Fourier, 
+% que utiliza las muestras de una señal periódica $x(t)$ durante un cierto período. El intervalo de muestreo es de $T$   
+% segundos.  Por lo tanto, hay $N_0=\frac{T_0} { T}$ número de muestras en un período $T_0$. 
+% Para encontrar la relación entre $D_n$ y las muestras de $x(t)$ 
+%
+% $D_n=\frac{1}{T_0} * \int_{T_0} x(t)*e^{-jnwot}dt$
+%
+% $=\lim_{t\to 0}$  $\frac{1}{N_0T}$  $\sum_{k=0}^{N_0-1} x(kT)e^{-jn \omega_0 T}T$
+%
+%
+% $=\lim_{t\to 0}$  $\frac{1}{N_0}$  $\sum_{k=0}^{N_0-1} x(kT)e^{-jn\omega_0 T} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \quad (6.60)$  
+%
+%
+% donde $x(kT)$ es la k muestra de $x(t)$ y 
+%
+%
+% $N_0=\frac{T_0}{T} \quad \Omega_0=\omega_0 T= \frac{2\pi}{N_0} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad  (6.61)$
+%
+% En la práctica, es imposible que $T \rightarrow 0$ entonces calculamos el lado derecho de la ecuación $(6.60)$. Podemos hacer $T$ pequeña, pero no cero, 
+% lo que hará que los datos aumenten sin límite. Por lo tanto, ignoraremos el límite de $T$ en la ecuación $(6.60)$ con el 
+%  entendimiento implícito de que $T$ es razonablemente pequeño. El valor distinto de cero en $T$ dará como resultado algún error 
+% de cálculo, que es inevitable en cualquier evaluación numérica de una integral, el error resultante de una $T$ distinta 
+% de cero se denomina error de aliasing: este proceso de define como la alteracion de
+% la percepcion de un determinado movimiento a traves de nuestra percepcion o de cualquier optica, 
+% por ejemplo cuando vamos andando por la calle y al mirar la llanta de un vehiculo tenemos la percepcion
+% de que mueve en sentido contrario, es decir el vehiculo se mueve haia adelante pero las ruedas es como
+% si se movieran hacia atras.
+%
+% Por lo tanto, podemos expresarla
+% como
+%
+% $D_n=\frac{1}{N_0}$  $\sum_{k=0}^{N_0-1} x(kT)e^{-jn \Omega_0 T} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad (6.62a)$
+% 
+% Ahora, desde la ecuacion $(6.61)$, $\Omega_0 N_0 = 2\pi$ . Por lo tanto, $e^{j \Omega_0 (k + N 0)} = e^{j \Omega_0 k}$ y de la ecuación $(6.62a)$ se deduce que 
+%
+% $D_{n+N_0} = D_n \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \quad \qquad \qquad \qquad(6.62b)$
+% 
+% La propiedad de periodicidad $D_{n+N_0} = Dn$ significa que más allá de $n =\frac {N_0}{2}$, los coeficientes  
+% representan los valores para n negativo. Por ejemplo, cuando $N_0 = 32, D_{17} = D_{-15}, D_{18} = D_{-14}, ..., D_{31} = D_{-1}$. El ciclo se repite de nuevo desde $n = 32$ %
+%
+%% Ejemplo 6.1
+%%
+%
+% Sea la señal $e^{-\frac{t}{2}}$
+%
+% Tenemos que : 
+%
+% * $\omega _0=2$
+% * $a_0=0.504$
+% * $a_n=0.504(\frac{2}{1+16n^2})$
+% * $b_n=0.504(\frac{8n}{1+16n^2})$
+%
+% Con $c_0=a_0=0.504$ y 
+% $c_n=\sqrt{a_n^2+b_n^2} =0.504(\frac{2}{\sqrt{1+16n^2}})$
+%
+% Código para 4 armonicos
+clc;
+t0=0; % Valor inicial para calcular la serie
+% armo número de armonicos a utilizar en la gráfica
+% a, b intevalo para realizar la grafica de la serie
+tf=pi;% Valor final donde calcular la serie
+T=tf-t0;% Periodo de la función
+f=@(t) exp(-t/2); % Función original
+a0=(2/T)*integral(@(t)exp(-t/2),t0,tf); % Coeficiente a0 de la forma trigonometrica
+an=@(n) (2/T)*integral(@(t) exp(-t/2).*cos(2*pi*n*t/T),t0,tf); % Coeficiente an de la forma trigonometrica 
+bn=@(n) (2/T)*integral(@(t) exp(-t/2).*sin(2*pi*n*t/T),t0,tf); % Coeficiente bn de la forma trigonometrica
+armo=4; % Numero de armonicos
+a=-2*pi;
+b=3*pi;
+% a, b intevalo para realizar la grafica de la serie
+sft(t0,tf,an,a0,bn,f,armo,a,b) % función modificada para la forma trigonometrica
+%%
+% código para 15 armonicos
+armo=15;
+sft(t0,tf,an,a0,bn,f,armo,a,b)
+%% Ejemplo 6.2
+%%
+%
+% Sea la señal
+% $$ 
+%   f(x)= \left\{ \begin{array}{lcc}
+%             6t &    \left | t \right | <\frac{1}{2} \\
+%            \\ 6(1-t)   & \frac{1}{2} < t < \frac{3}{2} 
+%             \end{array}
+%   \right.
+% $$
+%
+% Tenemos que : 
+%
+% * $\omega_0=\pi$
+% * $a_0=0$
+% * $a_n=0$
+% * $b_n=\frac{24}{n^2\pi ^2} sin(\frac{n\pi}{2})$
+%
+% Con $c_0=a_0=0$ y 
+% $c_n=\frac{1}{2}(a_n-jb_n)=-\frac{j}{2}bn$
+%
+% Código para 4 armonicos
+t0=-0.5; % Valor inicial para calcular la serie
+% armo número de armonicos a utilizar en la gráfica
+% a, b intevalo para realizar la grafica de la serie
+tf=1.5;% Valor final donde calcular la serie
+f=@(t) (6*t).*(-1/2<t & t<1/2)+(6*(1-t)).*(1/2<=t & t<3/2); 
+armo=4; % Numero de armonicos
+d0=0;
+dn=@(n) (-12/(n.^2*pi.^2))*sin((n*pi)/2)*1j;
+a=-4;
+b=6;
+% a, b intevalo para realizar la grafica de la serie
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+%%
+% código para 15 armonicos
+armo=15;
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+%% Ejemplo 6.4
+%
+% Tenemos la señal 
+%
+% $$ 
+%   f(x)= \left\{ \begin{array}{lcc}
+%             1 &    \left | t \right | <\frac{\pi }{2} \\
+%            \\ 0   & c.o.c \\
+%            \\ f(x)=f(x+2\pi )
+%             \end{array}
+%   \right.
+% $$
+%
+% con:
+%
+% * $\omega_0=1$
+% * $a_0=1/2$
+% * $a_n=\frac{2}{n\pi } sin(\frac{n\pi}{2})$
+% * $b_n=0$
+% * $c_n=\frac{1}{2}(a_n-jb_n)=\frac{1}{n\pi } sin(\frac{n\pi}{2})$
+%
+% Código para 4 armonicos
+t0=-pi; % Valor inicial para calcular la serie
+% armo número de armonicos a utilizar en la gráfica
+% a, b intevalo para realizar la grafica de la serie
+tf=pi;% Valor final donde calcular la serie
+f=@(t) 1.*(-pi/2<t & t<pi/2); 
+armo=4; % Numero de armonicos
+d0=1/2;
+dn=@(n)(1/(n*pi))*sin((n*pi)/2);
+a=-5*pi;
+b=5*pi;
+% a, b intevalo para realizar la grafica de la serie
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+% código para 15 armonicos
+armo=15;
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+%% Ejemplo 6.5
+%
+% Sea la señal $e^{-\frac{t}{2}}$
+%
+% Tenemos que : 
+%
+% * $\omega _0=2$
+% * $a_0=0.504$
+% * $a_n=0.504(\frac{2}{1+16n^2})$
+% * $b_n=0.504(\frac{8n}{1+16n^2})$
+% * $d_n=\frac{0.504}{1+j4n}$
+%
+% Código para 4 armonicos
+t0=0; % Valor inicial para calcular la serie
+% armo número de armonicos a utilizar en la gráfica
+% a, b intevalo para realizar la grafica de la serie
+tf=pi;% Valor final donde calcular la serie
+f=@(t) exp(-t/2); 
+armo=4; % Numero de armonicos
+d0=1/2;
+dn=@(n)(0.504/(1+1j*4*n));
+a=-2*pi;
+b=3*pi;
+% a, b intevalo para realizar la grafica de la serie
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+% código para 15 armonicos
+armo=15;
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+%% Ejemplo 6.7
+%
+% Sea la señal $\delta_{T0}(t)$ el tren de pulsos con $T_0=3$.
+%
+% Tenemos que : 
+%
+% * $\omega _0=\frac{2\pi}{3}$
+% * $D_0=C_0=\frac{1}{3}$
+% * $D_n=\frac{1}{3}$
+% * $C_n=2 |D_n |=\frac{2}{3}$
+%
+% Código para 4 armonicos
+t0=0; % Valor inicial para calcular la serie
+% armo número de armonicos a utilizar en la gráfica
+% a, b intevalo para realizar la grafica de la serie
+tf=3;% Valor final donde calcular la serie
+f=@(t) 1.*(t==0 & t==3)+0.*(t<0 & t>0 & t<3 & t>3); 
+armo=4; % Numero de armonicos
+d0=1/3;
+dn=@(n) 1/3;
+a=-8;
+b=7;
+% a, b intevalo para realizar la grafica de la serie
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+%%
+% código para 15 armonicos
+armo=15;
+sfc(t0,tf,dn,d0,f,armo,a,b) 
+%% Ejemplo para computadora C6.2
+%
+f=@(t) exp(-t/2);
+t=-10:0.001:10;
+plot(t,f(mod(t,pi))) %%señal periodica
+
+sumterms = zeros(15, length(t)); sumterms(1,:) = 0.504;
+for n = 1:size(sumterms,1)-1;
+sumterms(n+1,:) = 0.504/(1+4*n*1j).*exp(2*n*t*1j);
+end
+x_N = cumsum (sumterms); figure(1); clf; ind = 0;
+for N = [0,1:2:size(sumterms, 1)-1],ind = ind+1; subplot (3,3,ind);
+plot (t,x_N(N+1,:), 'k',t,f(mod(t,pi))+0j, 'kREPLACE_WITH_DASH_DASH'); axis ([-10 10 -0.5 1.5]);
+xlabel ('t'); ylabel (['x_{',num2str(N),'} (t)']);
+end
+%
+%% Aproximación de coeficientes
+%
+% codigo para trapecio compuesto
+%
+% <include>trapecio.m</include>
+%
+% Usando la misma función que lathi en el ejemplo C6.4 y 6.1
+% la señal es $e^{-\frac{t}{2}}$ 
+%
+% Corriendo el código para calcular los 5 primeros coeficientes:
+T_0=pi;
+W_0=2*pi/T_0;
+DT_0=trapecio(@(t) exp(-t/2),0,pi)/pi;
+DT_1=trapecio(@(t) exp(-t/2)*exp(-1j*W_0*t),0,pi)/pi;
+DT_2=trapecio(@(t) exp(-t/2)*exp(-2j*W_0*t),0,pi)/pi;
+DT_3=trapecio(@(t) exp(-t/2)*exp(-3j*W_0*t),0,pi)/pi;
+DT_4=trapecio(@(t) exp(-t/2)*exp(-4j*W_0*t),0,pi)/pi;
+DT_n=[DT_0,DT_1,DT_2,DT_3,DT_4];
+magnitudTrapecio=abs(DT_n);
+%%
+%
+% Código de Lathi:
+T_0 = pi; N_0 = 256; T = T_0/N_0; t = (0:T:T*(N_0-1))'; M = 10; 
+x = exp(-t/2); x(1) = (exp(-pi/2) + 1)/2;
+D_n = fft (x)/N_0; n = [-N_0/2:N_0/2-1]'; 
+clf; subplot (2, 2, 1); stem(n, abs(fftshift (D_n)),'k'); 
+axis ([-M M -.1 .6]); xlabel('n'); ylabel('|D_n|'); 
+subplot (2, 2, 2); stem(n, angle(fftshift(D_n)),'k'); 
+axis([-M M -pi pi]); xlabel ('n'); ylabel('\angle D n [rad]');
+n = [0:M]; C_n(1) = abs(D_n(1)); C_n(2:M+1) = 2*abs (D_n(2:M+1)); 
+theta_n(1) = angle(D_n(1)); theta_n(2:M+1) = angle(D_n(2:M+1)); 
+subplot (2, 2, 3); stem(n,C_n,'k');
+xlabel ('n'); ylabel('C_n'); 
+subplot (2, 2, 4); stem(n,theta_n,'k'); 
+xlabel ('n'); ylabel('\theta n [rad]');
+clear magnitudLathi
+for a = 1:1:5
+magnitudTransformada(a)=abs(fftshift(D_n(a)));
+end
+%
+%%
+%
+% De forma exacta sabemos que $D_n=\frac{0.504}{1+j4n}$ por el ejemplo 6.5.
+% Aplicando código para los coeficientes exactos:
+%
+DE_n(1)=0.504;
+for n=2:1:5
+   DE_n(n)=abs(0.504/(1+4j*(n-1)));
+end
+%%
+% comparando los metodos
+%
+T = table(magnitudTrapecio',magnitudTransformada',DE_n');T(1:5,:);
+T.Properties.RowNames = {'D0','D1','D2','D3','D4'};
+T.Properties.VariableNames{'Var1'} = 'Trapecio';
+T.Properties.VariableNames{'Var2'} = 'Transformada';
+T.Properties.VariableNames{'Var3'} = 'Exacta'
+%%
+% Diferencia entre ambos metodos y el valor exacto:
+%
+DiferenciaTrapecio=abs(magnitudTrapecio-DE_n);
+DiferenciaTransformada=abs(magnitudTransformada-DE_n);
+
+T = table(DiferenciaTrapecio',DiferenciaLathi');T(1:5,:);
+T.Properties.RowNames = {'D0','D1','D2','D3','D4'};
+T.Properties.VariableNames{'Var1'} = 'Trapecio';
+T.Properties.VariableNames{'Var2'} = 'Transformada'
+%%
+% como se puede notar el método por la transformada discreta de
+% Fourier(TDF) se acerca más y tiene menos error que a diferencia del
+% Trapecio, entonces es más exacta.
+% 
+##### SOURCE END #####
+--></body></html>

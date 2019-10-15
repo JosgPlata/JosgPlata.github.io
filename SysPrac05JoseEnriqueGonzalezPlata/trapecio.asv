@@ -1,0 +1,18 @@
+function r=trapecio(f,a,b)
+%Primer argumento es una función anónima a la que se quiere encontrar la
+%integral por aproximación del trapecio compuesto.
+%a,b: son el límete inferior y superios respectivamente, de la integración.
+%u: número entre a y b que ajusta el error
+n=15;
+h=(b-a)/n;
+u=(b-a)/2;
+x_l=@(l) a+l*h;
+sum=0;
+for l=1:1:(n-1)
+    x_l=a+l*h;
+    sum=sum+f(x_l);
+end
+dr
+fu=matlabFunction(diff(diff(f)));
+r=(h/2)*(f(a)+f(b))+h*sum-(((b-a)/12)*h^2)*fu(u);
+end
