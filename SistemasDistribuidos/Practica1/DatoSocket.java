@@ -18,7 +18,7 @@ public class DatoSocket implements Serializable{
    public String toString ()
    {
        String resultado;
-       resultado = Integer.toString(longitudMensaje+2) + " -- " + mensaje;
+       resultado = Integer.toString(longitudMensaje+1) + " -- " + mensaje;
        return resultado;
    }
 
@@ -35,15 +35,15 @@ public class DatoSocket implements Serializable{
      throws IOException
      {
          // Se lee la longitud de la cadena y se le resta 1 para eliminar el \0 que
-         // nos envía C.
+         // nos envÃ­a C.
          longitudMensaje=in.readInt()-1;
 
          // Array de bytes auxiliar para la lectura de la cadena.
-         byte []aux=null;
+         byte[]aux=null;
 
-         aux=new byte[longitudMensaje];    // Se le da el tamaño
+         aux=new byte[longitudMensaje];    // Se le da el tamaÃ±o
          in.read(aux, 0, longitudMensaje);   // Se leen los bytes
-         mensaje=new String (aux); // Se convierten a String
+         mensaje=new String(aux); // Se convierten a String
          in.read(aux,0,1);     // Se lee el \0
      }
 }
