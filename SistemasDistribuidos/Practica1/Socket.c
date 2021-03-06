@@ -7,12 +7,17 @@
 #include <errno.h>
 #include <stdio.h>
 
-int Lee_Socket(int fd,char *Datos, int Longitud){
-	int Leido=0;
-	int Aux=0;
+#include "Socket.h"
+
+/*Lee datos del socket. Supone que se le pasa un buffer con hueco
+suficiente para los datos. Devuelve el numero de bytes leidos o
+0 si se cierra fichero o -1 si hay error.*/
+int Lee_Socket(int fd, char *Datos, int Longitud){
+	int Leido = 0;
+	int Aux = 0;
 
 	//Comprobacion de que los parametros de entrada son correctos
-	if ((fd==-1) || (Datos == NULL) || (Longitud < 1))
+	if ((fd == -1) || (Datos == NULL) || (Longitud < 1))
 		return -1;
 
 	//Mientras no hayamos leido todos los datos solicitados
@@ -56,6 +61,8 @@ int Lee_Socket(int fd,char *Datos, int Longitud){
 	return Leido;
 }
 
+/*Escribe dato en el socket cliente. Devuelve numero de bytes escritos,
+o -1 si hay error.*/
 int Escribe_Socket (int fd, char *Datos, int Longitud){
 	int Escrito = 0;
 	int Aux = 0;
@@ -67,7 +74,7 @@ int Escribe_Socket (int fd, char *Datos, int Longitud){
 	/*Bucle hasta que hayamos escrito todos los caracteres que nos han
 	indicado.*/
 	while (Escrito < Longitud){
-		Aux=write(fd,Datos+Escrito,Longitud-Escrito);
+		Aux = write (fd, Datos + Escrito, Longitud - Escrito);
 		if (Aux > 0){
 			/*Si hemos conseguido escribir caracteres, se actualiza la
 			variable Escrito*/
